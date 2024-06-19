@@ -4,17 +4,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Team {
+    public int startValue;
     private int num;
     private String name;
     private BigDecimal cost;
     private LocalDate regDate;
     private List<Member> memList = new ArrayList<>();
-    public Team(int num, String name, BigDecimal cost, LocalDate regDate) {
+
+    public List<Member> getMemList() {
+        return memList;
+    }
+
+    public void setMemList(List<Member> memList) {
+        this.memList = memList;
+    }
+
+    public Team(String name, List<Member> memList) {
+
         Main m = new Main();
-        this.num = num;
+        this.num = startValue;
         this.name = name;
+        startValue++;
+
         this.cost = m.getDefaultSum();
         this.regDate = LocalDate.now();
+        this.memList = memList;
     }
 
     public int getNum() {

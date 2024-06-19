@@ -9,6 +9,10 @@ public class Member {
         this.team = team;
     }
 
+    public void setTeam(Team team) {
+        this.team = team;
+    }
+
     public Team getTeam() {
         return team;
     }

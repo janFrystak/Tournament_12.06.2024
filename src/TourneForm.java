@@ -2,6 +2,7 @@ import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
@@ -10,6 +11,8 @@ public class TourneForm extends JFrame {
     private JTable myTable;
     private JLabel formTableLaber;
     private List<Member> memList = new ArrayList<>();
+    private TeamManager TM = new TeamManager(new ArrayList<>());
+    private List<Team> teamList = new ArrayList<>();
     private JMenuBar mainMenu = new JMenuBar();
     private JMenu openMenu = new JMenu("Options");
     private JMenuItem openFile = new JMenuItem("Load File");
@@ -17,7 +20,8 @@ public class TourneForm extends JFrame {
     private JMenu statsMenu = new JMenu("Stats");
     private JMenuItem memCount = new JMenuItem("Member Count");
     private JMenuItem nameOverTen = new JMenuItem("Old Names");
-    private Team currTeam = new Team(0, null, null, null);
+    private Team currTeam = new Team("current", null);
+    private int index;
 
 
     public TourneForm() {
@@ -93,18 +97,42 @@ public class TourneForm extends JFrame {
             Scanner sc = new Scanner(new BufferedReader(new FileReader(file)));
         )
         {
-            Team team1 = new Team(1, null, null, null);
+
+            //Team tempTeam = new Team(null, memList);
+            //Member tempMember = new Member(null, 0, null);
             while(sc.hasNextLine()){
                 String line = sc.nextLine();
                 String[] blok = line.split(";");
                 String name = blok[0];
                 int num = Integer.parseInt(blok[1]);
-                team1.setName(blok[2]);
-                formTableLaber.setText("Team: " + team1.getName());
-                memList.add(new Member(name,num, team1));
-                currTeam = team1;
-                myTable.setModel(new TableModel());
+
+                //List<Team> teamList = new ArrayList<>();
+                //List<Member> memList = new ArrayList<>();
+
+                /*tempMember.setName(name);
+                tempMember.setStartNum(num);
+
+                tempTeam.setName(blok[2]);
+                tempMember.setTeam(tempTeam);*/
+                boolean contains = false;
+                for (Team team: teamList){
+                    if (team.getName() == blok[2]){
+                        contains = true;
+                    }
+                    else contains = false;
+                }
+                if (contains)
+                {
+
+                }
+                for (Team team: teamList){
+                    System.out.println(teamList.size());
+                }
+
+
             }
+            //formTableLaber.setText("Team: " + tempTeam.getName());
+            myTable.setModel(new TableModel());
         }catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -123,7 +151,7 @@ public class TourneForm extends JFrame {
 
         @Override
         public Object getValueAt(int rowIndex, int columnIndex) {
-            Member mem = memList.get(rowIndex);
+            Member mem = teamList.get(index).getMemList().get(rowIndex);
             switch (columnIndex){
                 case 0: return mem.getName();
                 case 1:return mem.getStartNum();
